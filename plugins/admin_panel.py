@@ -1,4 +1,4 @@
-from config import Config, Txt
+from config import Config, Txt, ADMIN
 from helper.database import codeflixbots
 from pyrogram.types import Message
 from pyrogram import Client, filters
@@ -8,7 +8,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-ADMIN_USER_ID = Config.ADMIN
+ADMIN_USER_ID = ADMIN
 
 # Flag to indicate if the bot is restarting
 is_restarting = False
@@ -40,7 +40,7 @@ async def tutorial(bot: Client, message: Message):
         ])
     )
 
-@Client.on_message(filters.private & filters.command("ban") & filters.user(Config.ADMIN))
+@Client.on_message(filters.private & filters.command("ban") & filters.user(ADMIN))
 async def ban(c: Client, m: Message):
     if len(m.command) < 4:
         await m.reply_text(
@@ -79,7 +79,7 @@ async def ban(c: Client, m: Message):
             quote=True
         )
 
-@Client.on_message(filters.private & filters.command("unban") & filters.user(Config.ADMIN))
+@Client.on_message(filters.private & filters.command("unban") & filters.user(ADMIN))
 async def unban(c: Client, m: Message):
     if len(m.command) != 2:
         await m.reply_text(
@@ -115,7 +115,7 @@ async def unban(c: Client, m: Message):
             quote=True
         )
 
-@Client.on_message(filters.private & filters.command("banned_users") & filters.user(Config.ADMIN))
+@Client.on_message(filters.private & filters.command("banned_users") & filters.user(ADMIN))
 async def banned_users(_, m: Message):
     all_banned_users = await codeflixbots.get_all_banned_users()
     banned_usr_count = 0
@@ -139,7 +139,7 @@ async def banned_users(_, m: Message):
     else:
         await m.reply_text(reply_text, quote=True)
 
-@Client.on_message(filters.command(["stats", "status"]) & filters.user(Config.ADMIN))
+@Client.on_message(filters.command(["stats", "status"]) & filters.user(ADMIN))
 async def get_stats(bot: Client, message: Message):
     total_users = await codeflixbots.total_users_count()
     uptime = time.strftime("%Hh %Mm %Ss", time.gmtime(time.time() - bot.uptime))
@@ -154,7 +154,7 @@ async def get_stats(bot: Client, message: Message):
         f"**👭 Total Users :** `{total_users}`"
     )
 
-@Client.on_message(filters.command("broadcast") & filters.user(Config.ADMIN) & filters.reply)
+@Client.on_message(filters.command("broadcast") & filters.user(ADMIN) & filters.reply)
 async def broadcast_handler(bot: Client, m: Message):
     await bot.send_message(Config.LOG_CHANNEL, f"{m.from_user.mention} or {m.from_user.id} Started the Broadcast.")
     all_users = await codeflixbots.get_all_users()
