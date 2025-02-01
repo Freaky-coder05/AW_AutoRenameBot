@@ -41,7 +41,7 @@ async def process_queue(client, user_id):
             user_queues[user_id].task_done()
 
 # Inside the handler for file uploads
-@Client.on_message(filters.private & (filters.document | filters.video | filters.audio) & filters.user(Config.ADMIN))
+@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
 async def auto_rename_file(client, message):
     is_verified = await check_verification(client, message.from_user.id)
     if not is_verified:
