@@ -1,8 +1,18 @@
 import random
 import asyncio
 from pyrogram import Client, filters
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-
+from pyrogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ForceReply,
+    CallbackQuery,
+    Message,
+    InputMediaPhoto,
+)
+from utils import verify_user, check_token
+from info import VERIFY, VERIFY_TUTORIAL, BOT_USERNAME
+from utils import verify_user, check_token
+from info import VERIFY, VERIFY_TUTORIAL, BOT_USERNAME
 from helper.database import codeflixbots
 from config import *
 from config import Config
