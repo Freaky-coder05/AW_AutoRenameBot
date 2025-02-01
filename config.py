@@ -5,7 +5,7 @@ from os import environ, getenv
 id_pattern = re.compile(r'^.\d+$') 
 
 
-ADMIN =[6299192020].split(',')
+ADMIN =[6299192020]
 
 @Client.on_message(filters.command("/add_admin") & filters.user(ADMIN))
 async def set_target_channel(client , message):
