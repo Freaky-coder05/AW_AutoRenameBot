@@ -1,6 +1,16 @@
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait
-from pyrogram.types import InputMediaDocument, Message
+from pyrogram.types import (
+    InlineKeyboardButton,
+    InputMediaDocument,
+    InlineKeyboardMarkup,
+    ForceReply,
+    CallbackQuery,
+    Message,
+    InputMediaPhoto,
+)
+from utils import check_verification, get_token
+from info import VERIFY, VERIFY_TUTORIAL, BOT_USERNAME
 from PIL import Image
 from datetime import datetime
 from hachoir.metadata import extractMetadata
@@ -13,8 +23,73 @@ import time
 import re
 import subprocess
 import asyncio
+from asyncio import sleep, Queue, Lock
 
 renaming_operations = {}
+
+user_queues = {}
+
+queue_locks = {}
+
+
+async def process_queue(client, user_id):
+    """Processes the queue for a specific user."""
+    async with queue_locks[user_id]:  # Ensure only one task is processing at a time
+        while not user_queues[user_id].empty():
+            message = await user_queues[user_id].get()
+            await auto_rename_files(client, message)
+            user_queues[user_id].task_done()
+
+# Inside the handler for file uploads
+@Client.on_message(filters.private & (filters.document | filters.video | filters.audio) & filters.user(Config.ADMIN))
+async def auto_rename_file(client, message):
+    is_verified = await check_verification(client, message.from_user.id)
+    if not is_verified:
+        # Send verification message and return
+        verification_url = await get_token(client, message.from_user.id, f"https://t.me/{BOT_USERNAME}?start=")
+        await message.reply_text(
+            "⚠️You need to verify your account before you can use The Bot⚡. \n\n Please verify your account using the following link👇:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton('🔗 Verify Now ☘️', url=verification_url)]
+            ])
+        )
+        return
+    user_id = message.from_user.id
+
+    # Initialize queue and lock for the user if not already present
+    if user_id not in user_queues:
+        user_queues[user_id] = Queue()
+        queue_locks[user_id] = Lock()
+
+    # Check if queue is being processed
+    is_queue_empty = user_queues[user_id].empty()
+
+    # Add file to the user's queue
+    user_queues[user_id].put_nowait(message)
+
+    # Notify user of their position in the queue
+    queue_size = user_queues[user_id].qsize()
+    if is_queue_empty:
+        asyncio.create_task(process_queue(client, user_id))
+    else:
+        await message.reply_text(f"✅ Your file has been added to the queue.\n📂 Position in queue: {queue_size}")
+
+
+@Client.on_message(filters.private & filters.command("clear_que"))
+async def clear_queue(client, message):
+    user_id = message.from_user.id
+
+    if user_id in user_queues:
+        queue_size = user_queues[user_id].qsize()
+
+        if queue_size > 0:
+            user_queues[user_id] = Queue()  # Clear the queue by reinitializing it
+            await message.reply_text(f"🗑️ Your queue has been cleared! ({queue_size} files removed)")
+        else:
+            await message.reply_text("✅ Your queue is already empty.")
+    else:
+        await message.reply_text("ℹ️ You don't have any active queue.")
+
 
 # Pattern 1: S01E02 or S01EP02
 pattern1 = re.compile(r'S(\d+)(?:E|EP)(\d+)')
@@ -210,8 +285,7 @@ async def auto_rename_files(client, message):
         del renaming_operations[file_id]
         return await download_msg.edit(f"**Download Error:** {e}")
 
-    await download_msg.edit("**__Renaming and Adding Metadata...__**")
-
+    
     try:
         # Rename the file first
         os.rename(path, renamed_file_path)
@@ -221,6 +295,8 @@ async def auto_rename_files(client, message):
         metadata_added = False
         _bool_metadata = await codeflixbots.get_metadata(user_id)
         if _bool_metadata:
+            await download_msg.edit("** Please wait Adding Metadata...__**")
+
             metadata = await codeflixbots.get_metadata_code(user_id)
             if metadata:
                 cmd = f'ffmpeg -i "{renamed_file_path}"  -map 0 -c:s copy -c:a copy -c:v copy -metadata title="{metadata}" -metadata author="{metadata}" -metadata:s:s title="{metadata}" -metadata:s:a title="{metadata}" -metadata:s:v title="{metadata}"  "{metadata_file_path}"'
@@ -234,6 +310,8 @@ async def auto_rename_files(client, message):
                     if process.returncode == 0:
                         metadata_added = True
                         path = metadata_file_path
+                        await download_msg.edit("** Metadata Added Successfully ✅...__**")
+
                     else:
                         error_message = stderr.decode()
                         await download_msg.edit(f"**Metadata Error:**\n{error_message}")
@@ -291,12 +369,11 @@ async def auto_rename_files(client, message):
                     progress_args=("Upload Started...", upload_msg, time.time()),
                 )
             elif media_type == "video":
-                await client.send_video(
+                await client.send_document(
                     message.chat.id,
-                    video=path,
+                    document=path,
                     caption=caption,
                     thumb=ph_path,
-                    duration=0,
                     progress=progress_for_pyrogram,
                     progress_args=("Upload Started...", upload_msg, time.time()),
                 )
