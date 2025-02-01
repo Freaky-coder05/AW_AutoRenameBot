@@ -8,7 +8,7 @@ DEV=[6299192020]
 
 ADMIN =[]
 
-@Client.on_message(filters.command("add_admin") & filters.user(DEV))
+@Client.on_message(filters.command("aadmin") & filters.user(DEV))
 async def set_target_channel(client , message):
     
     # Extract channel ID from the message
@@ -16,17 +16,15 @@ async def set_target_channel(client , message):
         channel_id = message.command[1]
         try:
             admin_id = int(channel_id)
-            if admin_id in ADMIN:
-                await message.reply("This Id is Already in Admin 🫅")
-            else:
-                ADMIN.append(admin_id)
-                await message.reply("New Admin id {admin_id} added successfully ✅")
-        except ValueError:
-            await message.reply("Invalid channel ID. Please provide a valid channel ID.")
+            ADMIN.append(admin_id)
+            await message.reply_text("New Admin id {admin_id} added successfully ✅")
+       
+        except ValueError:   
+            await message.reply_text("Invalid channel ID. Please provide a valid channel ID.")
     else:
-        await message.reply("Please provide a channel ID after the command. Example: /set_target 123456789")
+        await message.reply_text("Please provide a channel ID after the command. Example: /set_target 123456789")
 
-@Client.on_message(filters.command("rem_admin") & filters.user(DEV))
+@Client.on_message(filters.command("radmin") & filters.user(DEV))
 async def set_target_channel(client , message):
     
 
@@ -37,13 +35,13 @@ async def set_target_channel(client , message):
             admin_id = int(channel_id)
             if admin_id in ADMIN:
                 ADMIN.remove(admin_id)
-                await message.reply(" 🗑️Admin id {admin_id} Delete successfully ✅")
+                await message.reply_text(" 🗑️Admin id {admin_id} Delete successfully ✅")
             else:
-                await Message.reply(" There is No Admin in this Id 🫅")
+                await Message.reply_text(" There is No Admin in this Id 🫅")
         except ValueError:
-            await message.reply("Invalid channel ID. Please provide a valid channel ID.")
+            await message.reply_text("Invalid channel ID. Please provide a valid channel ID.")
     else:
-        await message.reply("Please provide a channel ID after the command. Example: /set_target 123456789")
+        await message.reply_twxt("Please provide a channel ID after the command. Example: /set_target 123456789")
 
 
 class Config(object):
