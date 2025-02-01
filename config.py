@@ -4,12 +4,12 @@ from pyrogram import Client, filters
 from os import environ, getenv
 id_pattern = re.compile(r'^.\d+$') 
 
+DEV=[6299192020]
 
-ADMIN =[6299192020]
+ADMIN =[]
 
-@Client.on_message(filters.command("/add_admin") & filters.user(ADMIN))
+@Client.on_message(filters.command("add_admin") & filters.user(DEV))
 async def set_target_channel(client , message):
-    global ADMIN
     
     # Extract channel ID from the message
     if len(message.command) > 1:
@@ -26,7 +26,7 @@ async def set_target_channel(client , message):
     else:
         await message.reply("Please provide a channel ID after the command. Example: /set_target 123456789")
 
-@Client.on_message(filters.command("/rem_admin") & filters.user(ADMIN))
+@Client.on_message(filters.command("rem_admin") & filters.user(DEV))
 async def set_target_channel(client , message):
     
 
