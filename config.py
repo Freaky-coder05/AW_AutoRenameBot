@@ -9,6 +9,7 @@ ADMIN =[6299192020]
 
 @Client.on_message(filters.command("/add_admin") & filters.user(ADMIN))
 async def set_target_channel(client , message):
+    global ADMIN
     
     # Extract channel ID from the message
     if len(message.command) > 1:
