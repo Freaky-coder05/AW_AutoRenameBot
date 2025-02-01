@@ -213,7 +213,7 @@ episode_number = extract_episode_number(filename)
 print(f"Extracted Episode Number: {episode_number}")
 
 
-@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
+
 async def auto_rename_files(client, message):
     user_id = message.from_user.id
     format_template = await codeflixbots.get_format_template(user_id)
