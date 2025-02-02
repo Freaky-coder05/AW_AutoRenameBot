@@ -5,7 +5,7 @@ from pyrogram.errors import UserNotParticipant
 from config import Config
 
 FORCE_SUB_CHANNELS = Config.FORCE_SUB_CHANNELS
-IMAGE_URL = Config.
+IMAGE_URL = Config.START_PIC
 
 async def not_subscribed(_, __, message):
     for channel in FORCE_SUB_CHANNELS:
