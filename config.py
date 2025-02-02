@@ -9,8 +9,8 @@ ADMIN = [6299192020,6121610691,6693549185,5326198063, 7035627523]  # TemporLoad 
 
 class Config(object):
     # pyro client config
-    API_ID    = os.environ.get("API_ID", "21740783")
-    API_HASH  = os.environ.get("API_HASH", "a5dc7fec8302615f5b441ec5e238cd46")
+    API_ID    = os.environ.get("API_ID", "22954018")
+    API_HASH  = os.environ.get("API_HASH", "f32a7d229f886bdf763cf4ec75e9f9e3")
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "7435219753:AAFzGs09ktzVU6Zt7NI_ChfVyAAPlDDe9FU") 
 
     # database config
@@ -34,13 +34,13 @@ class Txt(object):
         
     START_TXT = """Hello {} 👋 
 
-➻ This Is An Advanced Video Uploader Bot.
+➻ This Is An Advanced Auto rename Bot.
 
-➻ Using This Bot You Can Able to Upload Your Files.
+➻ Using This Bot You Can Able to Rename Your Files.
 
-➻ You Can Also Select the path where the file is need to upload.
+➻ You Can Also Select the file type is need to upload.
 
-➻ This Bot is only for dev👉 @Anime_warrior_Tamil[Awt_botz].
+➻ This Bot is only for Admin use other can use with low limitation 
 
 <b>Bot Is Made By :</b> @Anime_warrior_tamil"""
 
