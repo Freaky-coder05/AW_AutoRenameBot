@@ -1,53 +1,11 @@
-import re, os, time, asyncio
-from pyrogram.types import Message
-from pyrogram import Client, filters
+import re, os, time
 from os import environ, getenv
-from helper.database import codeflixbots
 id_pattern = re.compile(r'^.\d+$') 
 
 DEV=[6299192020]
 
 # Fetch initial admin list
-ADMIN = []  # Temporary cache
-async def load_admins():
-    global ADMIN
-    ADMIN = await codeflixbots.get_admins()
-
-    asyncio.create_task(load_admins())
-
-@Client.on_message(filters.command("/add_admin") & filters.user(DEV))
-async def add_admin(client, message):
-    if len(message.command) > 1:
-        try:
-            admin_id = int(message.command[1])
-            if admin_id in ADMIN:
-                await message.reply("This ID is already an admin 🫅")
-            else:
-                ADMIN.append(admin_id)
-                await codeflixbots.update_admins(ADMIN)  # Save to DB
-                await message.reply(f"New admin ID {admin_id} added successfully ✅")
-        except ValueError:
-            await message.reply("Invalid ID. Please provide a valid user ID.")
-    else:
-        await message.reply("Usage: /add_admin <user_id>")
-
-@Client.on_message(filters.command("/rem_admin") & filters.user(DEV))
-async def remove_admin(client, message):
-    if len(message.command) > 1:
-        try:
-            admin_id = int(message.command[1])
-            if admin_id in ADMIN:
-                ADMIN.remove(admin_id)
-                await codeflixbots.update_admins(ADMIN)  # Save to DB
-                await message.reply(f"🗑️ Admin ID {admin_id} removed successfully ✅")
-            else:
-                await message.reply("There is no admin with this ID 🫅")
-        except ValueError:
-            await message.reply("Invalid ID. Please provide a valid user ID.")
-    else:
-        await message.reply("Usage: /rem_admin <user_id>")
-
-# Load admins when the bot starts
+ADMIN = []  # TemporLoad admins when the bot starts
 
 class Config(object):
     # pyro client config
