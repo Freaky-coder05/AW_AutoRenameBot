@@ -23,72 +23,15 @@ import time
 import re
 import subprocess
 import asyncio
-from asyncio import sleep, Queue, Lock
+
 
 renaming_operations = {}
 
-user_queues = {}
-
-queue_locks = {}
 
 
-async def process_queue(client, user_id):
-    """Processes the queue for a specific user."""
-    async with queue_locks[user_id]:  # Ensure only one task is processing at a time
-        while not user_queues[user_id].empty():
-            message = await user_queues[user_id].get()
-            await auto_rename_files(client, message)
-            user_queues[user_id].task_done()
+
 
 # Inside the handler for file uploads
-@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
-async def auto_rename_file(client, message):
-    is_verified = await check_verification(client, message.from_user.id)
-    if not is_verified:
-        # Send verification message and return
-        verification_url = await get_token(client, message.from_user.id, f"https://t.me/{BOT_USERNAME}?start=")
-        await message.reply_text(
-            "⚠️You need to verify your account before you can use The Bot⚡. \n\n Please verify your account using the following link👇:",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton('🔗 Verify Now ☘️', url=verification_url)]
-            ])
-        )
-        return
-    user_id = message.from_user.id
-
-    # Initialize queue and lock for the user if not already present
-    if user_id not in user_queues:
-        user_queues[user_id] = Queue()
-        queue_locks[user_id] = Lock()
-
-    # Check if queue is being processed
-    is_queue_empty = user_queues[user_id].empty()
-
-    # Add file to the user's queue
-    user_queues[user_id].put_nowait(message)
-
-    # Notify user of their position in the queue
-    queue_size = user_queues[user_id].qsize()
-    if is_queue_empty:
-        asyncio.create_task(process_queue(client, user_id))
-    else:
-        await message.reply_text(f"✅ Your file has been added to the queue.\n📂 Position in queue: {queue_size}")
-
-
-@Client.on_message(filters.private & filters.command("clear_que"))
-async def clear_queue(client, message):
-    user_id = message.from_user.id
-
-    if user_id in user_queues:
-        queue_size = user_queues[user_id].qsize()
-
-        if queue_size > 0:
-            user_queues[user_id] = Queue()  # Clear the queue by reinitializing it
-            await message.reply_text(f"🗑️ Your queue has been cleared! ({queue_size} files removed)")
-        else:
-            await message.reply_text("✅ Your queue is already empty.")
-    else:
-        await message.reply_text("ℹ️ You don't have any active queue.")
 
 
 # Pattern 1: S01E02 or S01EP02
@@ -213,8 +156,20 @@ episode_number = extract_episode_number(filename)
 print(f"Extracted Episode Number: {episode_number}")
 
 
-
+@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
 async def auto_rename_files(client, message):
+    is_verified = await check_verification(client, message.from_user.id)
+    if not is_verified:
+        # Send verification message and return
+        verification_url = await get_token(client, message.from_user.id, f"https://t.me/{BOT_USERNAME}?start=")
+        await message.reply_text(
+            "⚠️You need to verify your account before you can use The Bot⚡. \n\n Please verify your account using the following link👇 \n\n If You Verify You Can use Our Bot without any limit for 1hour 💫:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton('🔗 Verify Now ☘️', url=verification_url)]
+            ])
+        )
+        return
+
     user_id = message.from_user.id
     format_template = await codeflixbots.get_format_template(user_id)
     media_preference = await codeflixbots.get_media_preference(user_id)
