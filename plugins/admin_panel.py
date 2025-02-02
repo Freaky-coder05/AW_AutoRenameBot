@@ -26,7 +26,7 @@ async def add_admin(client, message):
 
     new_admin_id = int(message.command[1])
     if new_admin_id not in ADMIN:
-        Config().ADMIN.append(new_admin_id)
+        ADMIN.append(new_admin_id)
         await message.reply_text(f"User {new_admin_id} has been added as an admin.")
     else:
         await message.reply_text(f"User {new_admin_id} is already an admin.")
