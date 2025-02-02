@@ -8,42 +8,47 @@ DEV=[6299192020]
 
 ADMIN =[]
 
-@Client.on_message(filters.command("aadmin") & filters.user(DEV))
-async def set_target_channel(client , message):
-    
-    # Extract channel ID from the message
+# Fetch initial admin list
+ADMIN = []  # Temporary cache
+async def load_admins():
+    global ADMIN
+    ADMIN = await get_admins()
+
+@Client.on_message(filters.command("/add_admin") & filters.user(ADMIN))
+async def add_admin(client, message):
     if len(message.command) > 1:
-        channel_id = message.command[1]
         try:
-            admin_id = int(channel_id)
-            ADMIN.append(admin_id)
-            await message.reply_text("New Admin id {admin_id} added successfully ✅")
-       
-        except ValueError:   
-            await message.reply_text("Invalid channel ID. Please provide a valid channel ID.")
+            admin_id = int(message.command[1])
+            if admin_id in ADMIN:
+                await message.reply("This ID is already an admin 🫅")
+            else:
+                ADMIN.append(admin_id)
+                await update_admins(ADMIN)  # Save to DB
+                await message.reply(f"New admin ID {admin_id} added successfully ✅")
+        except ValueError:
+            await message.reply("Invalid ID. Please provide a valid user ID.")
     else:
-        await message.reply_text("Please provide a channel ID after the command. Example: /set_target 123456789")
+        await message.reply("Usage: /add_admin <user_id>")
 
-@Client.on_message(filters.command("radmin") & filters.user(DEV))
-async def set_target_channel(client , message):
-    
-
-    # Extract channel ID from the message
+@Client.on_message(filters.command("/rem_admin") & filters.user(ADMIN))
+async def remove_admin(client, message):
     if len(message.command) > 1:
-        channel_id = message.command[1]
         try:
-            admin_id = int(channel_id)
+            admin_id = int(message.command[1])
             if admin_id in ADMIN:
                 ADMIN.remove(admin_id)
-                await message.reply_text(" 🗑️Admin id {admin_id} Delete successfully ✅")
+                await update_admins(ADMIN)  # Save to DB
+                await message.reply(f"🗑️ Admin ID {admin_id} removed successfully ✅")
             else:
-                await Message.reply_text(" There is No Admin in this Id 🫅")
+                await message.reply("There is no admin with this ID 🫅")
         except ValueError:
-            await message.reply_text("Invalid channel ID. Please provide a valid channel ID.")
+            await message.reply("Invalid ID. Please provide a valid user ID.")
     else:
-        await message.reply_twxt("Please provide a channel ID after the command. Example: /set_target 123456789")
+        await message.reply("Usage: /rem_admin <user_id>")
 
-
+# Load admins when the bot starts
+import asyncio
+asyncio.create_task(load_admins())
 class Config(object):
     # pyro client config
     API_ID    = os.environ.get("API_ID", "21740783")
