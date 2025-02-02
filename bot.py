@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from pytz import timezone
 from pyrogram import Client, __version__
 from pyrogram.raw.all import layer
-from config import Config
+from config import Config, ADMIN
 from aiohttp import web
 from route import web_server
 import pyrogram.utils
@@ -41,35 +41,16 @@ class Bot(Client):
             await web.TCPSite(app, "0.0.0.0", 8020).start()     
         print(f"{me.first_name} Is Started.....✨️")
 
-        # Calculate uptime using timedelta
-        uptime_seconds = int(time.time() - self.start_time)
-        uptime_string = str(timedelta(seconds=uptime_seconds))
-
-        for chat_id in [Config.LOG_CHANNEL]:
+        for id in ADMIN:
+            try: await self.send_message(id, f"**__{me.first_name}  Iꜱ Sᴛᴀʀᴛᴇᴅ.....✨️__**")                                
+            except: pass
+        if Config.LOG_CHANNEL:
             try:
                 curr = datetime.now(timezone("Asia/Kolkata"))
                 date = curr.strftime('%d %B, %Y')
-                time_str = curr.strftime('%I:%M:%S %p')
-                
-                # Send the message with the photo
-                await self.send_photo(
-                    chat_id=chat_id,
-                    photo=Config.START_PIC,
-                    caption=(
-                        "**Aw-Renamer ɪs ʀᴇsᴛᴀʀᴛᴇᴅ ᴀɢᴀɪɴ  !**\n\n"
-                        f"**__{me.mention} Iꜱ Started the bot !!**"
-                        f"ɪ ᴅɪᴅɴ'ᴛ sʟᴇᴘᴛ sɪɴᴄᴇ​: `{uptime_string}`"
-
-
-                    ),
-                    reply_markup=InlineKeyboardMarkup(
-                        [[
-                            InlineKeyboardButton("ᴜᴘᴅᴀᴛᴇs", url="https://t.me/anime_warrior_tamil")
-                        ]]
-                    )
-                )
-
-            except Exception as e:
-                print(f"Failed to send message in chat {chat_id}: {e}")
+                time = curr.strftime('%I:%M:%S %p')
+                await self.send_message(Config.LOG_CHANNEL, f"**__{me.mention} Iꜱ Rᴇsᴛᴀʀᴛᴇᴅ !!**\n\n📅 Dᴀᴛᴇ : `{date}`\n⏰ Tɪᴍᴇ : `{time}`\n🌐 Tɪᴍᴇᴢᴏɴᴇ : `Asia/Kolkata`\n\n🉐 Vᴇʀsɪᴏɴ : `v{__version__} (Layer {layer})`</b>")                                
+            except:
+                print("Pʟᴇᴀꜱᴇ Mᴀᴋᴇ Tʜɪꜱ Iꜱ Aᴅᴍɪɴ Iɴ Yᴏᴜʀ Lᴏɢ Cʜᴀɴɴᴇʟ")
 
 Bot().run()
