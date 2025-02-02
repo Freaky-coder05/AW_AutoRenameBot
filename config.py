@@ -14,16 +14,16 @@ class Config(object):
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "7435219753:AAFzGs09ktzVU6Zt7NI_ChfVyAAPlDDe9FU") 
 
     # database config
-    DB_NAME = os.environ.get("DB_NAME","boyrokey00")     
-    DB_URL  = os.environ.get("DB_URL","mongodb+srv://boyrokey00:rajan123@cluster0.4fhuu.mongodb.net/")
-    PORT = os.environ.get("PORT", "8020")
+    DB_NAME = os.environ.get("DB_NAME","Speedwolf1")     
+    DB_URL  = os.environ.get("DB_URL","mongodb+srv://Speedwolf1:speedwolf24689@cluster0.rgfywsf.mongodb.net/")
+    PORT = os.environ.get("PORT", "8050")
  
     # other configs
     BOT_UPTIME  = time.time()
-    START_PIC   = os.environ.get("START_PIC", "https://graph.org/file/29a3acbbab9de5f45a5fe.jpg")
+    START_PIC   = os.environ.get("START_PIC", "https://telegra.ph/file/feb6dd0a1cb8576943c0f.jpg")
     
-    FORCE_SUB_CHANNELS = os.environ.get('FORCE_SUB_CHANNELS', None)
-    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "0" ))
+    FORCE_SUB_CHANNELS = os.environ.get('FORCE_SUB_CHANNELS', 'ATXBOTS')
+    LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002040299414" ))
     
     # wes response configuration     
     WEBHOOK = bool(os.environ.get("WEBHOOK", "True"))
@@ -32,70 +32,69 @@ class Config(object):
 class Txt(object):
     # part of text configuration
         
-    START_TXT = """Hello {} 
-    
-➻ This Is An Advanced And Yet Powerful Rename Bot.
-    
-➻ Using This Bot You Can Auto Rename Of Your Files.
-    
-➻ This Bot Also Supports Custom Thumbnail And Custom Caption.
-    
-➻ Use /tutorial Command To Know How To Use Me.
+    START_TXT = """Hello {} 👋 
 
-<b>Bot Is Made By @AshutoshGoswami24</b>
+➻ This Is An Advanced Video Uploader Bot.
 
-<b><a href='https://github.com/AshutoshGoswami24/Auto-Rename-Bot'>AshutoshGoswami24/Auto-Rename-Bot.git</a></b>
-"""
-    
-    FILE_NAME_TXT = """<b><u>SETUP AUTO RENAME FORMAT</u></b>
+➻ Using This Bot You Can Able to Upload Your Files.
 
-Use These Keywords To Setup Custom File Name
+➻ You Can Also Select the path where the file is need to upload.
 
-✓ `[episode]` :- To Replace Episode Number
-✓ `[quality]` :- To Replace Video Resolution
+➻ This Bot is only for dev👉 @Anime_warrior_Tamil[Awt_botz].
 
-<b>➻ Example :</b> <code> /autorename Naruto Shippuden S01[episode] [quality][Dual Audio] @AshutoshGoswami24</code>
+<b>Bot Is Made By :</b> @Anime_warrior_tamil"""
 
-<b>➻ Your Current Auto Rename Format :</b> <code>{format_template}</code> """
-    
-    ABOUT_TXT = f"""<b>🤖 My Name :</b>
+    ABOUT_TXT = f"""<b>😈 My Name :</b> <a href='https://t.me/Gjjbsrijjb_bot'>Video editor bot ⚡</a>
 <b>📝 Language :</b> <a href='https://python.org'>Python 3</a>
 <b>📚 Library :</b> <a href='https://pyrogram.org'>Pyrogram 2.0</a>
 <b>🚀 Server :</b> <a href='https://heroku.com'>Heroku</a>
-<b>🧑‍💻 Developer :</b> <a href='https://t.me/AshutoshGoswami24'>PandaWep</a>
+<b>📢 Channel :</b> <a href='https://t.me/Anime_Warrior_Tamil'>AWT BOTS</a>
+<b>🛡️ :</b> <a href='https://t.me/+NITVxLchQhYzNGZl'>AWT Developer</a>
     
-<b>♻️ Bot Made By :</b> @AshutoshGoswami24"""
+<b>😈 Bot Made By :</b> @AWT_Bot_Developer"""
 
-    
-    THUMBNAIL_TXT = """<b><u>🖼️  HOW TO SET THUMBNAIL</u></b>
-    
-⦿ You Can Add Custom Thumbnail Simply By Sending A Photo To Me....
-    
-⦿ /viewthumb - Use This Command To See Your Thumbnail
-⦿ /delthumb - Use This Command To Delete Your Thumbnail"""
+    HELP_TXT = """
+🌌 <b><u>How To Set Thumbnail</u></b>
+  
+➪ /start - Start The Bot And Send Any Photo To Automatically Set Thumbnail.
+➪ /del_thumb - Use This Command To Delete Your Old Thumbnail.
+➪ /view_thumb - Use This Command To View Your Current Thumbnail.
 
-    CAPTION_TXT = """<b><u>📝  HOW TO SET CAPTION</u></b>
-    
-⦿ /set_caption - Use This Command To Set Your Caption
-⦿ /see_caption - Use This Command To See Your Caption
-⦿ /del_caption - Use This Command To Delete Your Caption"""
+📑 <b><u>How To Set Custom Caption</u></b>
 
-    PROGRESS_BAR = """<b>\n
-╭━━━━❰ᴘʀᴏɢʀᴇss ʙᴀʀ❱━➣
-┣⪼ 🗃️ Sɪᴢᴇ: {1} | {2}
-┣⪼ ⏳️ Dᴏɴᴇ : {0}%
-┣⪼ 🚀 Sᴩᴇᴇᴅ: {3}/s
-┣⪼ ⏰️ Eᴛᴀ: {4}
-┣⪼ 🥺 joine Plz: @AshutoshGoswami24
-╰━━━━━━━━━━━━━━━➣ </b>"""
-    
-    
-    DONATE_TXT = """<b>🥲 Thanks For Showing Interest In Donation! ❤️</b>
-    
+➪ /set_caption - Use This Command To Set A Custom Caption
+➪ /see_caption - Use This Command To View Your Custom Caption
+➪ /del_caption - Use This Command To Delete Your Custom Caption
+➪ Example - <code>/set_caption 📕 Name ➠ : {filename}
+
+🔗 Size ➠ : {filesize} 
+
+⏰ Duration ➠ : {duration}</code>
+
+"""
+
+    PROGRESS_BAR = """\n
+ <b>🔗 Size :</b> {1} | {2}
+️ <b>⏳️ Done :</b> {0}%
+ <b>🚀 Speed :</b> {3}/s
+️ <b>⏰️ ETA :</b> {4}
+"""
+
+    DONATE_TXT = """
+<b>🥲 Thanks For Showing Interest In Donation! ❤️</b>
+
 If You Like My Bots & Projects, You Can 🎁 Donate Me Any Amount From 10 Rs Upto Your Choice.
-    
-<b>My UPI - PandaWep@ybl</b> """
-    
-    HELP_TXT = """<b>Hey</b> {}
-    
-Joine @AshutoshGoswami24 To Help """
+
+<b>🛍 UPI ID:</b> `Now off❌`
+"""
+
+
+    SEND_METADATA = """<b><u>🖼️  HOW TO SET CUSTOM METADATA</u></b>
+
+For Example :-
+
+<code>By :- @Anime_warrior_tamil</code>
+
+💬 For Any Help Contact @Anime_warrior_tamil
+"""
+
