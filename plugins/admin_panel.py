@@ -12,48 +12,42 @@ ADMIN_USER_ID = ADMIN
 
 # Flag to indicate if the bot is restarting
 is_restarting = False
+DEV=6299192020
 
+def is_admin(user_id):
+    return user_id in ADMIN
 
-DEV=[6299192020]
-
-
-async def load_admins():
-    global ADMIN
-    ADMIN = await codeflixbots.get_admins()
-
-    asyncio.create_task(load_admins())
-
-@Client.on_message(filters.command("/add_admin") & filters.user(DEV))
+# Add an admin command
+@Client.on_message(filters.command("add_admin") & filters.user(DEV))
 async def add_admin(client, message):
-    if len(message.command) > 1:
-        try:
-            admin_id = int(message.command[1])
-            if admin_id in ADMIN:
-                await message.reply("This ID is already an admin 🫅")
-            else:
-                ADMIN.append(admin_id)
-                await codeflixbots.update_admins(ADMIN)  # Save to DB
-                await message.reply(f"New admin ID {admin_id} added successfully ✅")
-        except ValueError:
-            await message.reply("Invalid ID. Please provide a valid user ID.")
-    else:
-        await message.reply("Usage: /add_admin <user_id>")
+    if len(message.command) != 2:
+        await message.reply_text("Usage: /add_admin <user_id>")
+        return
 
-@Client.on_message(filters.command("/rem_admin") & filters.user(DEV))
-async def remove_admin(client, message):
-    if len(message.command) > 1:
-        try:
-            admin_id = int(message.command[1])
-            if admin_id in ADMIN:
-                ADMIN.remove(admin_id)
-                await codeflixbots.update_admins(ADMIN)  # Save to DB
-                await message.reply(f"🗑️ Admin ID {admin_id} removed successfully ✅")
-            else:
-                await message.reply("There is no admin with this ID 🫅")
-        except ValueError:
-            await message.reply("Invalid ID. Please provide a valid user ID.")
+    new_admin_id = int(message.command[1])
+    if new_admin_id not in ADMIN:
+        Config().ADMIN.append(new_admin_id)
+        await message.reply_text(f"User {new_admin_id} has been added as an admin.")
     else:
-        await message.reply("Usage: /rem_admin <user_id>")
+        await message.reply_text(f"User {new_admin_id} is already an admin.")
+
+# Remove an admin command
+@Client.on_message(filters.command("remove_admin") & filters.user(DEV))
+async def remove_admin(client, message):
+    if len(message.command) != 2:
+        await message.reply_text("Usage: /remove_admin <user_id>")
+        return
+
+    admin_id_to_remove = int(message.command[1])
+    if admin_id_to_remove in ADMIN:
+        ADMIN.remove(admin_id_to_remove)
+        await message.reply_text(f"User {admin_id_to_remove} has been removed as an admin.")
+    else:
+        await message.reply_text(f"User {admin_id_to_remove} is not an admin.")
+
+
+
+
 
 @Client.on_message(filters.private & filters.command("restart") & filters.user(ADMIN_USER_ID))
 async def restart_bot(b: Client, m: Message):
