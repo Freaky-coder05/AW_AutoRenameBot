@@ -197,5 +197,10 @@ class Database:
         banned_users = self.col.find({'ban_status.is_banned': True})
         return banned_users
 
+    async def get_admins(self):
+        admins = await self.col.find({"_id": "admin_list"})
+        return admins if admins else []
+    async def update_admins(self, admin_list):
+        await self.col.update_one({"_id": "admin_list"}, {"$set": {"admins": admin_list}}, upsert=True)
 
 codeflixbots = Database(Config.DB_URL, Config.DB_NAME)
