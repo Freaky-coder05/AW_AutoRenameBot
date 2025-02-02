@@ -33,7 +33,7 @@ class Bot(Client):
         await super().start()
         me = await self.get_me()
         self.mention = me.mention
-        self.username = me.username if me.username else "Renamer" 
+        self.username = me.username  
         self.uptime = Config.BOT_UPTIME     
         if Config.WEBHOOK:
             app = web.AppRunner(await web_server())
