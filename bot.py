@@ -12,10 +12,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import os
 import time
 
-pyrogram.utils.MIN_CHANNEL_ID = -1009147483647
-
-# Setting SUPPORT_CHAT directly here
-SUPPORT_CHAT = int(os.environ.get("SUPPORT_CHAT", "-1001566837125"))
+pyrogram.utils.MIN_CHANNEL_ID = -1009999999999
 
 class Bot(Client):
 
@@ -48,7 +45,7 @@ class Bot(Client):
         uptime_seconds = int(time.time() - self.start_time)
         uptime_string = str(timedelta(seconds=uptime_seconds))
 
-        for chat_id in [Config.LOG_CHANNEL, SUPPORT_CHAT]:
+        for chat_id in [Config.LOG_CHANNEL]:
             try:
                 curr = datetime.now(timezone("Asia/Kolkata"))
                 date = curr.strftime('%d %B, %Y')
@@ -59,12 +56,15 @@ class Bot(Client):
                     chat_id=chat_id,
                     photo=Config.START_PIC,
                     caption=(
-                        "**ᴀɴʏᴀ ɪs ʀᴇsᴛᴀʀᴛᴇᴅ ᴀɢᴀɪɴ  !**\n\n"
+                        "**Aw-Renamer ɪs ʀᴇsᴛᴀʀᴛᴇᴅ ᴀɢᴀɪɴ  !**\n\n"
+                        f"**__{me.mention} Iꜱ Started the bot !!**"
                         f"ɪ ᴅɪᴅɴ'ᴛ sʟᴇᴘᴛ sɪɴᴄᴇ​: `{uptime_string}`"
+
+
                     ),
                     reply_markup=InlineKeyboardMarkup(
                         [[
-                            InlineKeyboardButton("ᴜᴘᴅᴀᴛᴇs", url="https://t.me/codeflix_bots")
+                            InlineKeyboardButton("ᴜᴘᴅᴀᴛᴇs", url="https://t.me/anime_warrior_tamil")
                         ]]
                     )
                 )
