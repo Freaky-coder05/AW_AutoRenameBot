@@ -5,7 +5,7 @@ id_pattern = re.compile(r'^.\d+$')
 DEV=[6299192020]
 
 # Fetch initial admin list
-ADMIN = [6299192020,6121610691,6693549185,5326198063]  # TemporLoad admins when the bot starts
+ADMIN = [6299192020,6121610691,6693549185,5326198063, 7035627523]  # TemporLoad admins when the bot starts
 
 class Config(object):
     # pyro client config
