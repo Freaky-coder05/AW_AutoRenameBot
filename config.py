@@ -2,7 +2,7 @@ import re, os, time
 from os import environ, getenv
 id_pattern = re.compile(r'^.\d+$') 
 
-DEV=[6299192020]
+
 
 # Fetch initial admin list
 ADMIN = [6299192020,6121610691,6693549185,5326198063, 7035627523]  # TemporLoad admins when the bot starts
@@ -22,7 +22,7 @@ class Config(object):
     BOT_UPTIME  = time.time()
     START_PIC   = os.environ.get("START_PIC", "https://telegra.ph/file/feb6dd0a1cb8576943c0f.jpg")
     
-    FORCE_SUB_CHANNELS = os.environ.get('FORCE_SUB_CHANNELS', 'ATXBOTS')
+    FORCE_SUB_CHANNELS = os.environ.get('FORCE_SUB_CHANNELS', 'ATXBOTS').split(',')
     LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-1002040299414" ))
     
     # wes response configuration     
