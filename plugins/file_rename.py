@@ -351,7 +351,7 @@ async def auto_rename_files(client, message):
             # Mark the file as ignored
             return await upload_msg.edit(f"Error: {e}")
 
-        await download_msg.delete() 
+        await upload_msg.delete() 
         os.remove(renamed_file_path)
         if ph_path:
             os.remove(ph_path)
