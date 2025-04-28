@@ -73,15 +73,16 @@ async def process_queue(client, user_id):
 
 
 @Client.on_message(filters.private & filters.command("clear_queue"))
-async def clear_queue(client: Client, message: Message):
+async def clear_entire_queue(client: Client, message: Message):
     user_id = message.from_user.id
-    
-    # Check if the user has a queue
+
     if user_id in queue and queue[user_id]["messages"]:
-        # Clear the queue
-        queue[user_id]["messages"].clear()
-        queue[user_id]["queue_size"] = 0
-        await message.reply_text("✅ Your queue has been cleared successfully!")
+        if len(queue[user_id]["messages"]) >=1:
+            queue[user_id]["messages"].clear()   # Clear messages
+            queue[user_id]["queue_size"] = 0      # Reset queue size
+            await message.reply_text("✅ All files in your queue have been cleared!")
+        else:
+            await message.reply_text("Failed to clear the queue")
     else:
         await message.reply_text("⚠️ Your queue is already empty.")
 
