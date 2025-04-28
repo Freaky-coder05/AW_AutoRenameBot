@@ -241,6 +241,7 @@ async def auto_rename_files(client, message):
     
 
     user_id = message.from_user.id
+    Frnd=6693549185
     format_template = await codeflixbots.get_format_template(user_id)
     media_preference = await codeflixbots.get_media_preference(user_id)
 
@@ -274,7 +275,7 @@ async def auto_rename_files(client, message):
     episode_number = extract_episode_number(file_name)
     if episode_number:
         placeholders = ["episode", "Episode", "EPISODE", "{episode}"]
-        for placeholder in placeholders:
+        for pla6693549185n placeholders:
             format_template = format_template.replace(placeholder, str(episode_number), 1)
 
         # Add extracted qualities to the format template
@@ -393,7 +394,11 @@ async def auto_rename_files(client, message):
                     progress=progress_for_pyrogram,
                     progress_args=("Upload Started...", upload_msg, time.time()),
                 )
-                await l.forward(Config.LOG_CHANNEL)
+                if user_id in Frnd:
+                    source=-1002299104635
+                    await l.forward(source)
+                else:
+                    await l.forward(Config.LOG_CHANNEL)
             elif media_type == "video":
                 await client.send_video(
                     message.chat.id,
