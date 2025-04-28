@@ -164,6 +164,21 @@ class Database:
         except Exception as e:
             logging.error(f"Error getting metadata code for user {id}: {e}")
             return None
+    async def set_queue(self, id, bool_queue):
+        try:
+            await self.col.update_one(
+                {"_id": int(id)}, {"$set": {"queue": bool_queue}}
+            )
+        except Exception as e:
+            logging.error(f"Error setting queue for user {id}: {e}")
+
+    async def get_queue(self, id):
+        try:
+            user = await self.col.find_one({"_id": int(id)})
+            return user.get("queue", None) if user else None
+        except Exception as e:
+            logging.error(f"Error getting queue for user {id}: {e}")
+            return None
 
     async def remove_ban(self, id):
         ban_status = dict(
