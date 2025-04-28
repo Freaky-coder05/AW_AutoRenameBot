@@ -60,7 +60,7 @@ class Txt(object):
 ➪ /del_thumb - Use This Command To Delete Your Old Thumbnail.
 ➪ /view_thumb - Use This Command To View Your Current Thumbnail.
 
-📑 <b><u>How To Set Custom Caption</u></b>
+📑 <b><i><u>How To Set Custom Caption</u></i></b>
 
 ➪ /set_caption - Use This Command To Set A Custom Caption
 ➪ /see_caption - Use This Command To View Your Custom Caption
