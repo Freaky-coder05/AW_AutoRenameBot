@@ -37,12 +37,12 @@ async def handle_metadata(bot: Client, message: Message):
     if bool_metadata:
         await message.reply_text(
             f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ✅",
-                reply_markup=InlineKeyboardMarkup[(ON,queue_on)],
+                reply_markup=InlineKeyboardMarkup(queue_on+ON),
         )
     else:
         await message.reply_text(
             f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ❌",
-                reply_markup=InlineKeyboardMarkup[(OFF,queue_off)],
+                reply_markup=InlineKeyboardMarkup(queue_off+OFF),
         )
 
 
@@ -61,13 +61,13 @@ async def query_metadata(bot: Client, query: CallbackQuery):
             await codeflixbots.set_metadata(query.from_user.id, bool_meta=False)
             await query.message.edit(
                 f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ❌",
-                reply_markup=InlineKeyboardMarkup[(OFF,queue_off)],
+                reply_markup=InlineKeyboardMarkup(queue_off+OFF),
             )
         else:
             await codeflixbots.set_metadata(query.from_user.id, bool_meta=True)
             await query.message.edit(
                 f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ✅",
-                reply_markup=InlineKeyboardMarkup[(ON,queue_on)],
+                reply_markup=InlineKeyboardMarkup(queue_on+ON),
             )
 
     elif data.startswith("queue_"):
@@ -79,13 +79,13 @@ async def query_metadata(bot: Client, query: CallbackQuery):
             await codeflixbots.set_queue(query.from_user.id, bool_queue=False)
             await query.message.edit(
                 f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ❌",
-                reply_markup=InlineKeyboardMarkup[(OFF,queue_off)],
+                reply_markup=InlineKeyboardMarkup(queue_off+OFF),
             )
         else:
             await codeflixbots.set_queue(query.from_user.id, bool_queue=True)
             await query.message.edit(
                 f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ✅",
-                reply_markup=InlineKeyboardMarkup[(ON,queue_on)],
+                reply_markup=InlineKeyboardMarkup(queue_on+ON),
             )
 
     elif data == "custom_metadata":
