@@ -37,7 +37,7 @@ def generate_keyboard(bool_metadata, bool_queue):
     ])
 
 
-@Client.on_message(filters.private & filters.command("metadata"))
+@Client.on_message(filters.private & filters.command("settings"))
 async def handle_metadata(bot: Client, message: Message):
     ms = await message.reply_text("**Wait A Second...**", reply_to_message_id=message.id)
 
