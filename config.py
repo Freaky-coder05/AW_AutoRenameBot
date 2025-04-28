@@ -11,12 +11,12 @@ class Config(object):
     # pyro client config
     API_ID    = os.environ.get("API_ID", "22954018")
     API_HASH  = os.environ.get("API_HASH", "f32a7d229f886bdf763cf4ec75e9f9e3")
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "7435219753:AAHpGVBwHaKmFJHqQrOTXHwzadgBVq2G3zw") 
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "7722665729:AAEeMPaZvDazK-PIpGro90T5Z8NFzuR4eF0") 
 
     # database config
     DB_NAME = os.environ.get("DB_NAME","Speedwolf1")     
     DB_URL  = os.environ.get("DB_URL","mongodb+srv://Speedwolf1:speedwolf24689@cluster0.rgfywsf.mongodb.net/")
-    PORT = os.environ.get("PORT", "8080")
+    PORT = os.environ.get("PORT", "8030")
  
     # other configs
     BOT_UPTIME  = time.time()
