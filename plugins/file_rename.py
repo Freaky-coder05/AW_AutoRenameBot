@@ -29,7 +29,7 @@ renaming_operations = {}
 
 
 queue = {}  # Dictionary to manage user queues
-queue_size=0
+
 
 @Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
 async def handle_document(client: Client, message: Message):
@@ -48,25 +48,27 @@ async def handle_document(client: Client, message: Message):
     user_id = message.from_user.id
     
     if user_id not in queue:
-        queue[user_id] = []
+        queue[user_id] = {"messages": [], "queue_size": 0}
     
-    queue[user_id].append(message)
-    if len(queue[user_id])>1:
-        queue_size +=1
-        await message.reply_text(text=f"File added to Queue ✅ \n Position:{queue_size}")
-        
+    # Add the message to the user's queue
+    queue[user_id]["messages"].append(message)
     
-    if len(queue[user_id]) == 1:
-        await process_queue(client, user_id, queue_size)
+    if len(queue[user_id]["messages"]) > 1:
+        queue[user_id]["queue_size"] += 1
+        await message.reply_text(text=f"File added to Queue ✅ \n Position:{queue[user_id]['queue_size']}")
+    
+    if len(queue[user_id]["messages"]) == 1:
+        await process_queue(client, user_id)
+    
+    
 
-async def process_queue(client, user_id, queue_size):
-    while queue.get(user_id):
-        msg = queue[user_id][0]
+async def process_queue(client, user_id):
+    while queue.get(user_id) and queue[user_id]["messages"]:
+        msg = queue[user_id]["messages"][0]
         await auto_rename_files(client, msg)
-        queue[user_id].pop(0)
-        queue_size -=1
+        queue[user_id]["messages"].pop(0)
+        queue[user_id]["queue_size"] -= 1
         await asyncio.sleep(2)  # Short delay between tasks
-
 
 
 
