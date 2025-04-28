@@ -39,6 +39,30 @@ async def handle_metadata(bot: Client, message: Message):
         )
 
 
+@Client.on_message(filters.private & filters.command("clear_queue"))
+async def clear_queue(client: Client, message: Message):
+    user_id = message.from_user.id
+    
+    # Check if the user has a queue
+    if user_id in queue and queue[user_id]["messages"]:
+        # Clear the queue
+        queue[user_id]["messages"].clear()
+        queue[user_id]["queue_size"] = 0
+        await message.reply_text("✅ Your queue has been cleared successfully!")
+    else:
+        await message.reply_text("⚠️ Your queue is already empty.")
+
+@Client.on_message(filters.private & filters.command("clear"))
+async def clear_queue(client: Client, message: Message):
+    user_id = message.from_user.id
+    index=message.text.split(" ")[1]
+    if user_id in queue and queue[user_id]["messages"]:
+        if queue[user_id]["messages"] > 1:
+            queue[user_id]["message"].pop(index)
+            await message.reply_text(" in queue position -{index} has been Cleared✅")
+    else:
+        await message.reply_text("⚠️ Your queue is already empty.")
+
 @Client.on_callback_query(filters.regex(".*?(custom_metadata|metadata).*?"))
 async def query_metadata(bot: Client, query: CallbackQuery):
     data = query.data
