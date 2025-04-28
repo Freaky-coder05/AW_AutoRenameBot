@@ -67,7 +67,8 @@ async def process_queue(client, user_id):
         msg = queue[user_id]["messages"][0]
         await auto_rename_files(client, msg)
         queue[user_id]["messages"].pop(0)
-        queue[user_id]["queue_size"] -= 1
+        if queue[user_id]["queue_size"]>0:
+            queue[user_id]["queue_size"] -= 1
         await asyncio.sleep(2)  # Short delay between tasks
 
 
