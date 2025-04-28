@@ -275,7 +275,7 @@ async def auto_rename_files(client, message):
     episode_number = extract_episode_number(file_name)
     if episode_number:
         placeholders = ["episode", "Episode", "EPISODE", "{episode}"]
-        for pla6693549185n placeholders:
+        for placeholder in placeholders:
             format_template = format_template.replace(placeholder, str(episode_number), 1)
 
         # Add extracted qualities to the format template
