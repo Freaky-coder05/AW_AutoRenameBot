@@ -33,6 +33,7 @@ queue_size=0
 
 @Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
 async def handle_document(client: Client, message: Message):
+    global queue_size
     is_verified = await check_verification(client, message.from_user.id)
     if not is_verified:
         # Send verification message and return
