@@ -86,16 +86,23 @@ async def clear_queue(client: Client, message: Message):
         await message.reply_text("⚠️ Your queue is already empty.")
 
 @Client.on_message(filters.private & filters.command("clear"))
-async def clear_queue(client: Client, message: Message):
+async def clear_one_queue(client: Client, message: Message):
     user_id = message.from_user.id
-    index=message.text.split(" ")[1]
+    try:
+        index = int(message.text.split(" ")[1])  # convert to int
+    except (IndexError, ValueError):
+        await message.reply_text("⚠️ Please provide a valid index number! Example: `/clear 2`", parse_mode="markdown")
+        return
+
     if user_id in queue and queue[user_id]["messages"]:
-        if len(queue[user_id]["messages"]) >= 1:
-            queue[user_id]["message"].pop(index)
-            await message.reply_text(" in queue position -{index} has been Cleared✅")
+        if 0 <= index < len(queue[user_id]["messages"]):
+            queue[user_id]["messages"].pop(index)
+            queue[user_id]["queue_size"] -= 1  # Decrease queue size manually
+            await message.reply_text(f"✅ File at position {index} has been removed from your queue!")
+        else:
+            await message.reply_text(f"⚠️ No file at position {index}. Your queue has {len(queue[user_id]['messages'])} files.")
     else:
         await message.reply_text("⚠️ Your queue is already empty.")
-
 
 
 
