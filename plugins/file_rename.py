@@ -57,12 +57,12 @@ async def handle_document(client: Client, message: Message):
         
     
     if len(queue[user_id]) == 1:
-        await process_queue(user_id, queue_size)
+        await process_queue(client, user_id, queue_size)
 
-async def process_queue(user_id, queue_size):
+async def process_queue(client, user_id, queue_size):
     while queue.get(user_id):
         msg = queue[user_id][0]
-        await auto_rename_files(msg)
+        await auto_rename_files(client, msg)
         queue[user_id].pop(0)
         queue_size -=1
         await asyncio.sleep(2)  # Short delay between tasks
