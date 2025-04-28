@@ -29,7 +29,7 @@ OFF = [[InlineKeyboardButton('ᴍᴇᴛᴀᴅᴀᴛᴀ ᴏғғ', callback_data='
 async def handle_metadata(bot: Client, message: Message):
     ms = await message.reply_text("**Wait A Second...**", reply_to_message_id=message.id)
     bool_metadata = await codeflixbots.get_metadata(message.from_user.id)
-    user_queue = await codeflixbots.get_queue(query.from_user.id)
+    user_queue = await codeflixbots.get_queue(message.from_user.id)
     user_metadata = await codeflixbots.get_metadata_code(message.from_user.id)
     await ms.delete()
     
