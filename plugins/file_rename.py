@@ -28,6 +28,45 @@ import asyncio
 renaming_operations = {}
 
 
+queue = {}  # Dictionary to manage user queues
+queue_size=0
+
+@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
+async def handle_document(client: Client, message: Message):
+    is_verified = await check_verification(client, message.from_user.id)
+    if not is_verified:
+        # Send verification message and return
+        verification_url = await get_token(client, message.from_user.id, f"https://t.me/{BOT_USERNAME}?start=")
+        await message.reply_text(
+            "⚠️You need to verify your account before you can use The Bot⚡. \n\n Please verify your account using the following link👇 \n\n If You Verify You Can use Our Bot without any limit for 1hour 💫:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton('🔗 Verify Now ☘️', url=verification_url)]
+            ])
+        )
+        return
+    user_id = message.from_user.id
+    
+    if user_id not in queue:
+        queue[user_id] = []
+    
+    queue[user_id].append(message)
+    if len(queue[user_id])>1:
+        queue_size +=1
+        await message.reply_text(text=f"File added to Queue ✅ \n Position:{queue_size}")
+        
+    
+    if len(queue[user_id]) == 1:
+        await process_queue(user_id, queue_size)
+
+async def process_queue(user_id, queue_size):
+    while queue.get(user_id):
+        msg = queue[user_id][0]
+        await auto_rename_files(msg)
+        queue[user_id].pop(0)
+        queue_size -=1
+        await asyncio.sleep(2)  # Short delay between tasks
+
+
 
 
 
@@ -156,19 +195,9 @@ episode_number = extract_episode_number(filename)
 print(f"Extracted Episode Number: {episode_number}")
 
 
-@Client.on_message(filters.private & (filters.document | filters.video | filters.audio))
+
 async def auto_rename_files(client, message):
-    is_verified = await check_verification(client, message.from_user.id)
-    if not is_verified:
-        # Send verification message and return
-        verification_url = await get_token(client, message.from_user.id, f"https://t.me/{BOT_USERNAME}?start=")
-        await message.reply_text(
-            "⚠️You need to verify your account before you can use The Bot⚡. \n\n Please verify your account using the following link👇 \n\n If You Verify You Can use Our Bot without any limit for 1hour 💫:",
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton('🔗 Verify Now ☘️', url=verification_url)]
-            ])
-        )
-        return
+    
 
     user_id = message.from_user.id
     format_template = await codeflixbots.get_format_template(user_id)
