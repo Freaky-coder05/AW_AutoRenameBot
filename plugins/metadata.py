@@ -48,7 +48,7 @@ async def handle_metadata(bot: Client, message: Message):
     await ms.delete()
 
     await message.reply_text(
-        f"<b>Metadata Feature : {'✅' if bool_metadata else '❌'} \n\n Queue Feature : {'✅' if bool_queue else '❌'} \n ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n➜ `{user_metadata}",
+        f"<b>Metadata Feature : {'✅' if bool_metadata else '❌'} \n\n Queue Feature : {'✅' if bool_queue else '❌'} \n\n ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}`",
         reply_markup=generate_keyboard(bool_metadata, bool_queue),
     )
 
@@ -119,6 +119,6 @@ async def query_metadata(bot: Client, query: CallbackQuery):
 
     # Edit the existing message if NOT custom_metadata
     await query.message.edit(
-        f"<b>Metadata Feature : {'✅' if bool_metadata else '❌'} \n\n Queue Feature : {'✅' if bool_queue else '❌'} \n ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n➜ `{user_metadata}",
+        f"<b>Metadata Feature : {'✅' if bool_metadata else '❌'} \n\n Queue Feature : {'✅' if bool_queue else '❌'} \n\n ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}`",
         reply_markup=generate_keyboard(bool_metadata, bool_queue),
     )
