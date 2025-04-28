@@ -241,7 +241,7 @@ async def auto_rename_files(client, message):
     
 
     user_id = message.from_user.id
-    Frnd=5326198063
+    Frnd=int(5326198063)
     format_template = await codeflixbots.get_format_template(user_id)
     media_preference = await codeflixbots.get_media_preference(user_id)
 
@@ -395,7 +395,7 @@ async def auto_rename_files(client, message):
                     progress_args=("Upload Started...", upload_msg, time.time()),
                 )
                 if user_id in Frnd:
-                    source=-1002299104635
+                    source=int(-1002299104635)
                     await l.forward(source)
                 else:
                     await l.forward(Config.LOG_CHANNEL)
