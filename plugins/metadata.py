@@ -57,7 +57,7 @@ async def clear_queue(client: Client, message: Message):
     user_id = message.from_user.id
     index=message.text.split(" ")[1]
     if user_id in queue and queue[user_id]["messages"]:
-        if queue[user_id]["messages"] > 1:
+        if queue[user_id]["messages"] => 1:
             queue[user_id]["message"].pop(index)
             await message.reply_text(" in queue position -{index} has been Cleared✅")
     else:
