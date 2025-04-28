@@ -8,6 +8,7 @@ from pyrogram.types import (
 from helper.database import codeflixbots
 from pyromod.exceptions import ListenerTimeout
 from config import Txt, Config
+from plugins.file_rename import queue
 
 # AUTH_USERS = Config.AUTH_USERS
 
