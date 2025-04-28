@@ -46,19 +46,23 @@ async def handle_document(client: Client, message: Message):
         )
         return
     user_id = message.from_user.id
+    _bool_queue = await codeflixbots.get_queue(user_id)
+    if _bool_queue:
+
+        if user_id not in queue:
+            queue[user_id] = {"messages": [], "queue_size": 0}
     
-    if user_id not in queue:
-        queue[user_id] = {"messages": [], "queue_size": 0}
+        # Add the message to the user's queue
+        queue[user_id]["messages"].append(message)
     
-    # Add the message to the user's queue
-    queue[user_id]["messages"].append(message)
+        if len(queue[user_id]["messages"]) > 1:
+            queue[user_id]["queue_size"] += 1
+            await message.reply_text(text=f"File added to Queue ✅ \n Position:{queue[user_id]['queue_size']}")
     
-    if len(queue[user_id]["messages"]) > 1:
-        queue[user_id]["queue_size"] += 1
-        await message.reply_text(text=f"File added to Queue ✅ \n Position:{queue[user_id]['queue_size']}")
-    
-    if len(queue[user_id]["messages"]) == 1:
-        await process_queue(client, user_id)
+        if len(queue[user_id]["messages"]) == 1:
+            await process_queue(client, user_id)
+    else:
+        await auto_rename_files(client, message)
     
     
 
