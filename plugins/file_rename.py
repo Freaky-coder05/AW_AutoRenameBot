@@ -241,7 +241,7 @@ async def auto_rename_files(client, message):
     
 
     user_id = message.from_user.id
-    Frnd=6693549185
+    Frnd=5326198063
     format_template = await codeflixbots.get_format_template(user_id)
     media_preference = await codeflixbots.get_media_preference(user_id)
 
