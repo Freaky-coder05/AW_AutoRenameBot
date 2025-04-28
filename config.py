@@ -11,7 +11,7 @@ class Config(object):
     # pyro client config
     API_ID    = os.environ.get("API_ID", "22954018")
     API_HASH  = os.environ.get("API_HASH", "f32a7d229f886bdf763cf4ec75e9f9e3")
-    BOT_TOKEN = os.environ.get("BOT_TOKEN", "7722665729:AAEeMPaZvDazK-PIpGro90T5Z8NFzuR4eF0") 
+    BOT_TOKEN = os.environ.get("BOT_TOKEN", "7435219753:AAHpGVBwHaKmFJHqQrOTXHwzadgBVq2G3zw") 
 
     # database config
     DB_NAME = os.environ.get("DB_NAME","Speedwolf1")     
@@ -60,7 +60,7 @@ class Txt(object):
 ➪ /del_thumb - Use This Command To Delete Your Old Thumbnail.
 ➪ /view_thumb - Use This Command To View Your Current Thumbnail.
 
-📑 <b><i><u>How To Set Custom Caption</u></i></b>
+📑 <b><u>How To Set Custom Caption</u></b>
 
 ➪ /set_caption - Use This Command To Set A Custom Caption
 ➪ /see_caption - Use This Command To View Your Custom Caption
