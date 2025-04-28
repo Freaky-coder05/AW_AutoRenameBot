@@ -46,47 +46,57 @@ async def handle_metadata(bot: Client, message: Message):
         )
 
 
-
-
 @Client.on_callback_query(filters.regex(".*?(custom_metadata|metadata|queue).*?"))
 async def query_metadata(bot: Client, query: CallbackQuery):
     data = query.data
 
+    # Always fetch the latest states
+    bool_metadata = await codeflixbots.get_metadata(query.from_user.id)
+    bool_queue = await codeflixbots.get_queue(query.from_user.id)
+    user_metadata = await codeflixbots.get_metadata_code(query.from_user.id)
+
     if data.startswith("metadata_"):
         _bool = data.split("_")[1] == '1'
-        user_queue = await codeflixbots.get_queue(query.from_user.id)
-        user_metadata = await codeflixbots.get_metadata_code(query.from_user.id)
-
-        if _bool:
-            await codeflixbots.set_metadata(query.from_user.id, bool_meta=False)
-            await query.message.edit(
-                f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ❌",
-                reply_markup=InlineKeyboardMarkup(queue_off+OFF),
-            )
-        else:
-            await codeflixbots.set_metadata(query.from_user.id, bool_meta=True)
-            await query.message.edit(
-                f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ✅",
-                reply_markup=InlineKeyboardMarkup(queue_on+ON),
-            )
+        await codeflixbots.set_metadata(query.from_user.id, bool_meta=not _bool)
+        bool_metadata = not _bool  # update the local variable too after change
 
     elif data.startswith("queue_"):
         _bool = data.split("_")[1] == '1'
-        user_queue = await codeflixbots.get_queue(query.from_user.id)
-        user_metadata = await codeflixbots.get_metadata_code(query.from_user.id)
+        await codeflixbots.set_queue(query.from_user.id, bool_queue=not _bool)
+        bool_queue = not _bool  # update the local variable too after change
 
-        if _bool:
-            await codeflixbots.set_queue(query.from_user.id, bool_queue=False)
-            await query.message.edit(
-                f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ❌",
-                reply_markup=InlineKeyboardMarkup(queue_off+OFF),
+    # Now create keyboard dynamically
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                'Queue ON' if bool_queue else 'Queue OFF',
+                callback_data=f'queue_{"1" if bool_queue else "0"}'
+            ),
+            InlineKeyboardButton(
+                '✅' if bool_queue else '❌',
+                callback_data=f'queue_{"1" if bool_queue else "0"}'
             )
-        else:
-            await codeflixbots.set_queue(query.from_user.id, bool_queue=True)
-            await query.message.edit(
-                f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : ✅",
-                reply_markup=InlineKeyboardMarkup(queue_on+ON),
+        ],
+        [
+            InlineKeyboardButton(
+                'ᴍᴇᴛᴀᴅᴀᴛᴀ ᴏɴ' if bool_metadata else 'ᴍᴇᴛᴀᴅᴀᴛᴀ ᴏғғ',
+                callback_data=f'metadata_{"1" if bool_metadata else "0"}'
+            ),
+            InlineKeyboardButton(
+                '✅' if bool_metadata else '❌',
+                callback_data=f'metadata_{"1" if bool_metadata else "0"}'
             )
+        ],
+        [
+            InlineKeyboardButton('Sᴇᴛ Cᴜsᴛᴏᴍ Mᴇᴛᴀᴅᴀᴛᴀ', callback_data='custom_metadata')
+        ]
+    ]
+
+    await query.message.edit(
+        f"<b>ʏᴏᴜʀ ᴄᴜʀʀᴇɴᴛ ᴍᴇᴛᴀᴅᴀᴛᴀ:</b>\n\n➜ `{user_metadata}` \n\n Queue Feature : {'✅' if bool_queue else '❌'}",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+    )
+
 
     elif data == "custom_metadata":
         await query.message.delete()
