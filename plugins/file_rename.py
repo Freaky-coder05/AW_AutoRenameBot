@@ -325,7 +325,7 @@ async def auto_rename_files(client, message):
 
             metadata = await codeflixbots.get_metadata_code(user_id)
             if metadata:
-                cmd = f'ffmpeg -i "{renamed_file_path}"  -map 0 -c:s copy -c:a copy -c:v copy -metadata title="{metadata}" -metadata author="{metadata}" -metadata:s:s title="{metadata}" -metadata:s:a title="{metadata}" -metadata:s:v title="{metadata}"  "{metadata_file_path}"'
+                cmd = f'ffmpeg -i "{renamed_file_path}" -map 0 -sn -c:a copy -c:v copy -metadata title="{metadata}" -metadata author="{metadata}" -metadata:s:a title="{metadata}" -metadata:s:v title="{metadata}" "{metadata_file_path}"'
                 try:
                     process = await asyncio.create_subprocess_shell(
                         cmd,
